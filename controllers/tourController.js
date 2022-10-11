@@ -18,6 +18,24 @@ exports.checkTourId = (req, res, next, val) => {
   next();
 }
 
+exports.checkDataIntegrity = (req, res, next) =>
+{
+    const tourName = req.body["name"]
+    const tourPrice = req.body["price"]
+
+    if (tourPrice !== undefined && tourPrice !== null && tourPrice > 0 &&
+        tourName !== undefined && tourName !== null && tourName.length > 0)
+    {
+      next();
+    }
+    else {
+      return res.status(400).json({
+        status: "fail",
+        message: "A tour should have a positive price value and a name value."
+      })
+    }
+}
+
 exports.getAllTours = (req, res) =>
 {
   res.status(200).json({
