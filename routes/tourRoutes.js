@@ -4,12 +4,9 @@ const tourController = require('./../controllers/tourController')
 const router = express.Router();
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`));
 
-
-router.param('id', tourController.checkTourId);
-
 router.route('/')
   .get(tourController.getAllTours)
-  .post(tourController.checkDataIntegrity, tourController.createTour);
+  .post(tourController.createTour);
 
 router.route('/:id')
   .get(tourController.getTour)
