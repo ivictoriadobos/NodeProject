@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Tour = require('./../models/tourModel')
+const e = require('express');
 
 
 exports.getAllTours = async (req, res) => {
@@ -64,14 +65,45 @@ exports.createTour = async (req, res) =>
 
 }
 
-exports.updateTour = (req, res) =>
+exports.updateTour = async (req, res) => {
+  try {
+    const updatedTour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      // By default, findOneAndUpdate() returns the document as it was before update was applied.
+      // If you set new: true, findOneAndUpdate() will instead give you the object after update was applied.
+      runValidators: true
+    })
+
+    res.status(200).json({
+      status: 'success',
+      data: updatedTour
+    })
+
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err
+    })
+  }
+}
+
+exports.deleteTour = async (req, res) =>
 {
-  res.status(200).json(
-    {
-      status:"success",
-      data: {
-        tour: "Updated tour here..."
-      }
-    }
-  )
+  try {
+
+    const deletedTour = await Tour.findByIdAndDelete(req.params.id)
+
+    res.status(200).json({
+      status: 'success',
+      data: deletedTour
+    })
+  }
+
+  catch(err)
+  {
+    res.status(400).json({
+      status: 'fail',
+      message: err
+    })
+  }
 }
