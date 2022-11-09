@@ -1,10 +1,10 @@
 const express = require('express');
-const fs = require('fs');
 const tourController = require('./../controllers/tourController')
+const tourControllerMiddleware = require('./../controllers/middlewares/tourControllerMiddlewares')
 const router = express.Router();
 
 router.route('/')
-  .get(tourController.getAllTours)
+  .get(tourControllerMiddleware.validatePaginationQueryParameters, tourController.getAllTours)
   .post(tourController.createTour);
 
 router.route('/:id')
